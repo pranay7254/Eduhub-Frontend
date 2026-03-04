@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>EduHub Admin</title>
+  <style>
+    body { font-family: Arial; max-width: 400px; margin: 20px auto; }
+    input, select, button { width: 100%; padding: 8px; margin: 8px 0; }
+  </style>
+</head>
+<body>
+  <h2>EduHub Admin</h2>
+  <input type="password" id="pwd" placeholder="Enter password">
+  <button onclick="checkPwd()">Login</button>
+
+  <div id="adminPanel" style="display:none;">
+    <h3>Upload Materials</h3>
+    <select id="class">
+      <option value="9">Class 9</option>
+      <option value="10">Class 10</option>
+    </select>
+    <select id="subject">
+      <option value="Hindi">Hindi</option>
+      <option value="English">English</option>
+      <option value="Science">Science</option>
+      <option value="Maths">Maths</option>
+      <option value="Computer Application">Computer App</option>
+      <option value="SST">SST</option>
+    </select>
+    <select id="materialType">
+      <option value="Notes">Notes</option>
+      <option value="Sample">Sample Paper</option>
+      <option value="Board">Board Paper</option>
+      <option value="Competency">Competency</option>
+      <option value="Exemplar">Exemplar</option>
+      <option value="Practice">Practice</option>
+    </select>
+    <input type="file" id="pdfFile">
+    <button onclick="upload()">Upload</button>
+  </div>
+
+  <script>
+    let pwd = 'admin123'; // Set your password
+    function checkPwd() {
+      if(document.getElementById('pwd').value == pwd) {
+        document.getElementById('adminPanel').style.display = 'block';
+      } else {
+        alert('Wrong password');
+      }
+    }
+    function upload() {
+      const formData = new FormData();
+      formData.append('class', document.getElementById('class').value);
+      formData.append('subject', document.getElementById('subject').value);
+      formData.append('materialType', document.getElementById('materialType').value);
+      formData.append('pdfFile', document.getElementById('pdfFile').files[0]);
+      fetch('https://your-backend.onrender.com/upload', {
+        method: 'POST',
+        body: formData,
+      })
+      .then(res => res.text())
+      .then(data => alert(data));
+    }
+  </script>
+</body>
+</html>
