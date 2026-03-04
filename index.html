@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>EduHub</title>
+  <style>
+    body { font-family: Arial; max-width: 400px; margin: 20px auto; }
+    input, select, button { width: 100%; padding: 8px; margin: 8px 0; }
+  </style>
+</head>
+<body>
+  <h2>📚 EduHub</h2>
+  <form id="studentForm">
+    <input type="text" id="name" placeholder="Name">
+    <input type="email" id="email" placeholder="Email">
+    <select id="class">
+      <option value="9">Class 9</option>
+      <option value="10">Class 10</option>
+    </select>
+    <select id="subject">
+      <option value="Hindi">Hindi</option>
+      <option value="English">English</option>
+      <option value="Science">Science</option>
+      <option value="Maths">Maths</option>
+      <option value="Computer Application">Computer App</option>
+      <option value="SST">SST</option>
+    </select>
+    <select id="materialType">
+      <option value="Notes">Notes</option>
+      <option value="Sample">Sample Paper</option>
+      <option value="Board">Board Paper</option>
+      <option value="Competency">Competency</option>
+      <option value="Exemplar">Exemplar</option>
+      <option value="Practice">Practice</option>
+    </select>
+    <button type="submit">Get Materials</button>
+  </form>
+
+  <script>
+    document.getElementById('studentForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const formData = {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        class: document.getElementById('class').value,
+        subject: document.getElementById('subject').value,
+        materialType: document.getElementById('materialType').value,
+      };
+      fetch('https://your-backend.onrender.com/get-materials', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      })
+      .then(res => {
+        if (res.ok) return res.blob();
+        throw new Error('Not found');
+      })
+      .then(blob => {
+        const url = URL.createObjectURL(blob);
+        window.open(url);
+      })
+      .catch(err => alert('Material not found'));
+    });
+  </script>
+</body>
+</html>
